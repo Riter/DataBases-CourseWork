@@ -1,0 +1,66 @@
+@startuml
+entity "Routes" as Routes {
+    * route_id : INT
+    --
+    start_point : VARCHAR
+    end_point : VARCHAR
+    distance : FLOAT
+    stops : JSON
+}
+
+entity "Drivers" as Drivers {
+    * driver_id : INT
+    --
+    name : VARCHAR
+    license_number : VARCHAR
+    experience_years : INT
+}
+
+entity "Vehicles" as Vehicles {
+    * vehicle_id : INT
+    --
+    type : VARCHAR
+    capacity : INT
+    registration_number : VARCHAR
+}
+
+entity "Stops" as Stops {
+    * stop_id : INT
+    --
+    name : VARCHAR
+    location : VARCHAR
+}
+
+entity "Schedules" as Schedules {
+    * schedule_id : INT
+    --
+    route_id : INT
+    departure_time : DATETIME
+    arrival_time : DATETIME
+}
+
+entity "Tickets" as Tickets {
+    * ticket_id : INT
+    --
+    route_id : INT
+    price : DECIMAL
+    purchase_date : DATETIME
+    passenger_name : VARCHAR
+}
+
+entity "Shifts" as Shifts {
+    * shift_id : INT
+    --
+    driver_id : INT
+    route_id : INT
+    shift_start : DATETIME
+    shift_end : DATETIME
+}
+
+Routes ||--o{ Stops : includes
+Routes ||--o{ Schedules : scheduled_for
+Routes ||--o{ Tickets : associated_with
+Routes ||--o{ Shifts : assigned_to
+Drivers ||--o{ Shifts : works_in
+Vehicles ||--o{ Routes : operates_on
+@enduml
